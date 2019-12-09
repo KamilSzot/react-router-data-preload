@@ -68,12 +68,13 @@ class Home extends Component {
 	render() {
 		return <Route exact path="/" children={(route) =>
 			<Load match={route.match}>{(match) =>
-				<Query<{}> query={Q} children={(response) =>
+				<Query<any> query={Q} children={(response) =>
 					<Show match={match} response={response}>{(props) =>
 						<div>
 							<Dbg {...props.response} />
 							<h1 >Home</h1>
-							<div>{JSON.stringify(props.response && props.response.data, null, 2)}</div>
+							
+							<div>{console.log(response)} {JSON.stringify(props.response && props.response.data, null, 2)}</div>
 						</div>
 					}
 					</Show>
@@ -95,7 +96,7 @@ class Refresher extends Component<{children:(r:number) => {}}, { r: number }> {
   }
 }
 
-const About = (props:{}) => <Route path="/about">{(route) => <Show match={route.match}><h1>About</h1></Show>}</Route>;
+const About = (props:{}) => <Route path="/about">{(route) => <Load match={route.match}><h1>About</h1></Load>}</Route>;
 
 
 const App: FunctionComponent<{}> = () =>
@@ -104,7 +105,7 @@ const App: FunctionComponent<{}> = () =>
 			<header className="App-header">
 				<Router>
 					<Site showOnInitialNavigation={true} loadingLink={loadingLink}> 
-            <NavBar />
+           				<NavBar />
 						<Loading />
 
 						<Home />

@@ -18,15 +18,16 @@ export default class Offer extends Component {
         return <Route path="/offer/:id">
             {(route) =>
                 <Load match={route.match}>
-                    {(match) =>
-                        <Query<{ user: { name: string }}> query={Q} variables={{ login: match.params.id }} children={(routeResponse) =>
-                            <Show match={match} response={routeResponse}>
-                                {(props) =>
-                                    <h1>Offer {props.match.params.id}<br /> {props.response && props.response.data && props.response.data.user &&
-                                    <i>{props.response.data.user.name}</i> || null}</h1>
+                    {(match) => // keeps match if route no longer matches but you can't navigate away yet
+                        <Query<{ user: { name: string }}> query={Q} variables={{ login: match.params.id }} children={(queryResult) =>
+                            <Show match={match} response={queryResult}>
+                                {(props) => // keeps all current props (match params, response) till all loading of new responses finished
+                                    <h1>Offer {props.match.params.id}<br /> {console.log(props)}
+                                    <i>{props.response?.data?.user?.name}</i> </h1>
                                 }
                             </Show>
-                        } />
+                            
+                    } />
                     }
                 </Load>
             }

@@ -2,28 +2,25 @@ import { match as RouterMatch } from 'react-router'
 import { Component } from 'react'
 import { DeferContextType } from './DeferNavigation'
 
-type Props = { match: null|RouterMatch, context: DeferContextType };
-type State = { match: null|RouterMatch };
+type Props = { context: DeferContextType };
+type State = { context?: DeferContextType };
 
 export class ShowIn extends Component<Props, State> {
-    constructor(props:Props) {
+    constructor(props: Props) {
         super(props);
-        this.state = { match: null };
+        this.state = { };
     }
     
     static getDerivedStateFromProps(props:Props, state:State) {
-        if (props.context.canNavigate && !props.context.loading) {
-            return Object.assign(state, props);
+        if (!state.context || (props.context.canNavigate && !props.context.loading)) {
+            return props;
         }
         return null;
     }
     render() {
-        if(this.state.match) {
-            if(typeof this.props.children === "function") {
-                return this.props.children(this.state);
-            }
-            return this.props.children;
+        if(typeof this.props.children === "function") {
+            return this.props.children(this.state);
         }
-        return null;
+        return this.props.children;
     }
 }

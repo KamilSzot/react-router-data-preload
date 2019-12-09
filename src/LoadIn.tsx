@@ -1,9 +1,10 @@
 import { match as RouterMatch } from 'react-router'
-import { Component } from 'react'
+import { Component, ReactNode } from 'react'
 import { DeferContextType } from './DeferNavigation'
 
-type Props = { match: null|RouterMatch, context: DeferContextType };
-type State = { match: null|RouterMatch  };
+type Props = { match: null|RouterMatch, context: DeferContextType, children: ReactNode };
+type State = { match: null|RouterMatch };
+
 export class LoadIn extends Component<Props, State> {
     constructor(props: Props) {
         super(props);
@@ -11,10 +12,10 @@ export class LoadIn extends Component<Props, State> {
     }
     
     static getDerivedStateFromProps(props:Props, state:State) {
-        if (props.context.canNavigate && !props.context.loading && state.match !== props.match) {
-            return { match: props.match };
+        if (props.context.canNavigate && !props.context.loading) {
+            return props;
         }
-        return null
+        return null;
     }
     render() {
         if(this.props.match || this.state.match) {

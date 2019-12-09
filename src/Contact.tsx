@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
-import { Show } from './DeferNavigation'
+import { Show, Load } from './DeferNavigation'
 
 export default class Contact extends Component {
     render() {
         return <Route path="/contact">
             {(route) =>
-                <Show match={route.match}>
+                <Load match={route.match}>
                     <h1>Contact</h1>
-                </Show>
+                </Load>
             }
         </Route>;
     }

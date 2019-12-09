@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Children } from 'react'
 import { match as RouterMatch } from 'react-router'
 import { NavLink } from 'react-router-dom'
 import { Location } from 'history'
@@ -65,17 +65,21 @@ export class DeferNavigation extends Component<Props, State> {
     }
 }
 
-type ShowProps<ResponseType> = {
+type ShowProps<ResultType> = {
     match:null|RouterMatch, 
-    response?: ResponseType, 
-    children: (({ match, response }: { match: RouterMatch<{ id: string }>, response?:ResponseType}) => React.ReactNode ) | React.ReactNode
+    response?: ResultType, 
+    children: (({ match, response }: { match: RouterMatch<{ id: string }>, response?:ResultType}) => React.ReactNode ) | React.ReactNode
 };
 
-export class Show<ResponseType extends QueryResult> extends Component<ShowProps<ResponseType>> {
+export class Show<ResultType extends QueryResult> extends Component<ShowProps<ResultType>> {
     render() { 
          return <Consumer>{(context) => <ShowIn {...this.props} context={context} />}</Consumer>; 
     }
 }
-export const Load = (props: {match:null|RouterMatch, children:(match:RouterMatch<{ id: string }>) => React.ReactNode }) => <Consumer>{(context) => <LoadIn {...props} context={context} />}</Consumer>;
 
+export class Load extends Component<{match:null|RouterMatch, children:((match:RouterMatch<{ id: string }>) => React.ReactNode)|React.ReactNode }> {
+    render() {
+        return <Consumer>{(context) => <LoadIn match={this.props.match} children={this.props.children} context={context} />}</Consumer>;
+    }
+}
 
