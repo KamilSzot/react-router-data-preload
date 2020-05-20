@@ -29,7 +29,7 @@ export class LoadingLink extends ApolloLink {
             });
             return () => {
                 setTimeout(() => this.onLoadingChanged(!!--this.running),
-                    1500);
+                    2500);
             };
         });
     }
@@ -47,7 +47,7 @@ export class Site extends Component<{showOnInitialNavigation: boolean, loadingLi
                     showOnInitialNavigation={this.props.showOnInitialNavigation} 
                     loadingLink={this.props.loadingLink} 
                    location={props.location}
-                   children={(dnProps) => this.props.children} />} 
+                   children={this.props.children} />} 
         />
             
     }

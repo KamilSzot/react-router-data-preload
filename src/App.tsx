@@ -4,8 +4,6 @@ import logo from './logo.svg';
 import './App.css';
 
 import { BrowserRouter as Router, Route, Link, NavLink } from 'react-router-dom';
-import { resolve } from 'q';
-import { thisExpression } from '@babel/types';
 
 import NavBar from './NavBar'
 import Contact from './Contact'
@@ -68,12 +66,12 @@ class Home extends Component {
 	render() {
 		return <Route exact path="/" children={(route) =>
 			<Load match={route.match}>{(match) =>
-				<Query<{}> query={Q} children={(response) =>
-					<Show match={match} response={response}>{(props) =>
+				<Query<{}> query={Q} children={(result) =>
+					<Show match={match} result={result}>{(props) =>
 						<div>
-							<Dbg {...props.response} />
+							<Dbg {...props.result} />
 							<h1 >Home</h1>
-							<div>{JSON.stringify(props.response && props.response.data, null, 2)}</div>
+							<div>{JSON.stringify(props.result && props.result.data, null, 2)}</div>
 						</div>
 					}
 					</Show>
@@ -104,9 +102,8 @@ const App: FunctionComponent<{}> = () =>
 			<header className="App-header">
 				<Router>
 					<Site showOnInitialNavigation={true} loadingLink={loadingLink}> 
-            <NavBar />
+           				<NavBar />
 						<Loading />
-
 						<Home />
 						<Offer />
 						<About />

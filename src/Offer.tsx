@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { match as RouterMatch } from 'react-router'
-import { Route } from 'react-router-dom'
+import { Route, RouteChildrenProps } from 'react-router-dom'
 import { Show, Load } from './DeferNavigation'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
@@ -16,14 +15,14 @@ const Q = gql`
 export default class Offer extends Component {
     render() {
         return <Route path="/offer/:id">
-            {(route) =>
+            {(route:RouteChildrenProps<{ id?: string }>) =>
                 <Load match={route.match}>
-                    {(match) =>
-                        <Query<{ user: { name: string }}> query={Q} variables={{ login: match.params.id }} children={(routeResponse) =>
-                            <Show match={match} response={routeResponse}>
-                                {(props) =>
-                                    <h1>Offer {props.match.params.id}<br /> {props.response && props.response.data && props.response.data.user &&
-                                    <i>{props.response.data.user.name}</i> || null}</h1>
+                    {(match) => // keeps match if route no longer matches but you can't navigate away yet
+                        <Query<{ user: { name: string }}> query={Q} variables={{ login: match.params.id }} children={(queryResult) =>
+                            <Show match={match} result={queryResult}>
+                                {({match, result}) => // keeps current match and result till all loading of new results finished
+                                    <h1>Offer {match?.params.id}<br /> 
+                                    :<i>{result?.data?.user?.name}</i>:</h1>
                                 }
                             </Show>
                         } />
